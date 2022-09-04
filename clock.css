@@ -1,0 +1,145 @@
+*, *::after, *::before {
+    box-sizing: border-box;
+    /* border-box makes sizing easier */
+    font-family: Gotham Rounded, sans-serif;
+}
+
+body {
+    background: linear-gradient(to right, hsl(200, 100%, 50%),hsl(175, 100%, 50%));;
+    /* here from .clock::after at the bottom */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* after that it has been aligned at the center of our horizontal axis but not vertical axis */
+    min-height:100vh;
+    /* up to here it will be at the center but there will be a scroll bar and we don't want it thus */
+    overflow: hidden;
+}
+
+.clock {
+    /* height and weight are like that to create a square */
+    width: 300px;
+    height: 300px;
+    /* using rgba because we want it to be partially transparent */
+    /* it makes the blue and green color transparent a little it */
+    background-color: rgba(225,225,225, .8);
+    /* to make it a circle */
+    border-radius: 50%;
+    border: 2px solid black;
+    position: relative;
+}
+
+/* now what we do is position our numbers around the clock */
+
+.clock .number {
+    /* we want to position the numbers relative to the clock thus we use position absolute to .number ut position relative to .clock */
+    position:absolute;
+    /* now inside our number we do a nice little trick to make rotating easier around the clock thus..*/
+    width:100%;
+    height: 100%;
+    /* up to here we have a giant square that takes up the space of our clock*/
+    /* to position our numbers at the top of our square */
+    text-align: center;
+    /* to position all our numbers around the clock we use transform because with transform we can us what is called the rotate property*/
+    /* doing one rotate will apply it to all the numbers the same way but we dont want that.We need to set the rotate property for each number */
+    /* thus we use a variable in rotate */
+    transform: rotate(var(--rotation));
+    /* by default we need to set the rotation value to 0 */
+    --rotation: 0;
+    font-size: 1.5rem;
+
+}
+/* now we come here to select our individual numbers */
+
+.clock .number1 {--rotation: 30deg}
+.clock .number2 {--rotation: 60deg}
+.clock .number3 {--rotation: 90deg}
+.clock .number4 {--rotation: 120deg}
+.clock .number5 {--rotation: 150deg}
+.clock .number6 {--rotation: 180deg}
+.clock .number7 {--rotation: 210deg}
+.clock .number8 {--rotation: 240deg}
+.clock .number9 {--rotation: 270deg}
+.clock .number10 {--rotation: 300deg}
+.clock .number11 {--rotation: 330deg}
+/* our 12 is already defaulted to 360 deg thus no need */
+
+/* now we work on adding our hands which will be much easier than our numbers*/
+
+.clock .hand {
+    /* same reason as the numbers */
+    position: absolute;
+    /* we want the hands to positioned such that they are centered (the bottom of them need to be positioned at the center */
+    /* this is going to put them at the bottom */
+    bottom: 50%;
+    left: 50%;
+    /* to be able to see them we need to give them dimensions ie height and width */
+    /* width: 10px; */
+    /* height of 40% enables the length not to be up to the end */
+    /* height: 50%; */
+    /* background-color: black; */
+    /* we want to the arm to be dead centered to the number we want thus we use transform */
+    /* we translate to the object by 50% of it's width */
+    /* here also we use the rotate trick which will be used in our javascript */
+    transform: translateX(-50%) rotate(calc(var(--rotation) * 1deg));
+    /* by default we set the rotation to zero */
+    --rotation: 0;
+    /*up to here it is rotating towards the center but not around the bottom  */
+    /* transform-origin allows u to say where u want the transform to be applied to*/
+
+    transform-origin: bottom;
+
+    /*now we work on how we want our hand to look eg round at the end  */
+    border: 1px solid white;
+    /* we also want to create a border radius only to the top left*/
+    border-top-left-radius: 10px;
+    /* now we apply it to the top right */
+    border-top-right-radius: 10px;
+    /* now we want to make sure this always occur on top of our numbers thus.. */
+    z-index: 10;
+
+    /* now we want to make sure that the height, background-color, width is different or all our hands thus we comment out the width and height we had */
+
+}
+
+/* now we select our individual hands */
+
+.clock .hand.second {
+    width: 3px;
+    height: 45%;
+    background-color: red;
+}
+
+.clock .hand.minute {
+    width: 7px;
+    height: 40%;
+    background-color: black;
+}
+
+.clock .hand.hour {
+    width: 10px;
+    height: 35%;
+    background-color: black;
+}
+
+/* now we work on the circle at our center and centering our clock at the center of our screen */
+/* we are going to use a sudo element */
+
+.clock::after {
+    /* where we can store a new element */
+    content: '';
+    position: absolute;
+    background-color: black;
+    /* we want it to show above them */
+    z-index: 11;
+    /* now we set the width and the height */
+    width: 15px;
+    height: 15px;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    /* up to here we can see a box at the end of our hands at the center of the watch thus to make it a circle.. */
+    border-radius: 50%;
+}
+
+/* now we go to body and center everything */
